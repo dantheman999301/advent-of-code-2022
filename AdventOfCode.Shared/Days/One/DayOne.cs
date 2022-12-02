@@ -2,8 +2,10 @@
 
 namespace AdventOfCode.Shared.Days.One;
 
-public class DayOne : IDayBase
+public class DayOne : IDay
 {
+    public int DayNumber => 1;
+
     public async Task<Result<string>> RunPartOne(Stream input)
     {
         var elves = await GetElfTotals(input);
@@ -18,12 +20,11 @@ public class DayOne : IDayBase
     
     private static async Task<List<CalorieElf>> GetElfTotals(Stream input)
     {
-        using var streamReader = new StreamReader(input, leaveOpen: true);
-
         var elves = new List<CalorieElf>();
         var currentElf = 1;
         var runningCalorieCount = 0;
-
+        
+        using var streamReader = new StreamReader(input, leaveOpen: true);
         while (!streamReader.EndOfStream)
         {
             var line = await streamReader.ReadLineAsync();

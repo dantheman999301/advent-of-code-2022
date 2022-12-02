@@ -1,10 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using AdventOfCode.Runner;
 using AdventOfCode.Shared;
-using AdventOfCode.Shared.Days;
-using AdventOfCode.Shared.Days.One;
-using ConsoleApp1;
-using TextCopy;
 
 Console.WriteLine("Advent of Code!");
 Console.WriteLine();

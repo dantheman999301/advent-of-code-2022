@@ -1,19 +1,16 @@
-﻿using AdventOfCode.Shared.Days;
-using AdventOfCode.Shared.Days.One;
+﻿using System.Reflection;
+using AdventOfCode.Shared.Days;
 using TextCopy;
 
-namespace ConsoleApp1;
+namespace AdventOfCode.Runner;
 
 public static class DayRunner
 {
-    private static readonly Dictionary<int, IDayBase> Days = new()
-    {
-        { 1, new DayOne() }
-    };
+    private static readonly Lazy<IDictionary<int, IDay>> Days = new(CreateDayDictionary);
 
     public static async Task Run(int day, Stream input)
     {
-        if (!Days.TryGetValue(day, out var parts))
+        if (!Days.Value.TryGetValue(day, out var parts))
         {
             Console.WriteLine("Could not find day");
             return;
@@ -24,10 +21,29 @@ public static class DayRunner
         Console.WriteLine("Part one found and copied to clipboard");
         Console.WriteLine("Press a key to move to part two");
         Console.ReadKey();
-
+        
         input.Position = 0;
-        result = await parts.RunPartTwo(input);
-        await ClipboardService.SetTextAsync(result.Value);
-        Console.WriteLine("Part two found and copied to clipboard");
+        try
+        {
+            result = await parts.RunPartTwo(input);
+            await ClipboardService.SetTextAsync(result.Value);
+            Console.WriteLine("Part two found and copied to clipboard");
+        }
+        catch (NotImplementedException)
+        {
+            Console.WriteLine("Part two not yet implemented");
+        }
+    }
+
+    private static IDictionary<int, IDay> CreateDayDictionary()
+    {
+        var dayType = typeof(IDay);
+        var assembly = dayType.GetTypeInfo().Assembly;
+        return assembly
+            .DefinedTypes
+            .Where(t => dayType.IsAssignableFrom(t) && t != dayType)
+            .Select(Activator.CreateInstance)
+            .Cast<IDay>()
+            .ToDictionary(d => d.DayNumber, d => d);
     }
 }

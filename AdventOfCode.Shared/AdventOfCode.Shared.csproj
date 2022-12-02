@@ -12,12 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="Days\One\Input_1.txt" />
-      <EmbeddedResource Include="Days\One\Input.1.txt" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Models" />
+      <EmbeddedResource Include="Days\**\Input.*.txt" />
     </ItemGroup>
 
 </Project>
