@@ -16,12 +16,12 @@ public class DayTwoTests
     }
     
     [Theory]
-    [MemberData(nameof(ScoreDataPartOne))]
+    [MemberData(nameof(ScoreDataPartTwo))]
     public async Task GivenAPlay_WhenPlayedPartTwo_ScoreIsCorrect(string play, int expectedScore)
     {
         var dayTwo = new DayTwo();
         await using var playStream = play.ToStream();
-        var score = await dayTwo.RunPartOne(playStream);
+        var score = await dayTwo.RunPartTwo(playStream);
         score.Should().BeSuccess().And.HaveValue(expectedScore.ToString());
     }
     
@@ -48,14 +48,14 @@ public class DayTwoTests
         new List<object[]>
         {
             // Rock
-            new object[] { "A X", 0 + 2 }, // Loss (Paper)
+            new object[] { "A X", 0 + 3 }, // Loss (Scissors)
             new object[] { "A Y", 3 + 1 }, // Draw (Rock)
-            new object[] { "A Z", 6 + 6 }, // Win (Scissors)
+            new object[] { "A Z", 6 + 2 }, // Win (Paper)
             
             // Paper
-            new object[] { "B X", 0 + 3 }, // Loss (Scissors)
+            new object[] { "B X", 0 + 1 }, // Loss (Rock)
             new object[] { "B Y", 3 + 2 }, // Draw (Paper)
-            new object[] { "B Z", 6 + 1 }, // Win (Rock)
+            new object[] { "B Z", 6 + 3 }, // Win (Scissors)
             
             // Scissors
             new object[] { "C X", 0 + 2 }, // Loss (Paper)
