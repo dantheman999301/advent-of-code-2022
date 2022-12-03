@@ -53,7 +53,7 @@ public class DayTwo : IDay
         return await CalculateTotals(input, true);
     }
 
-    private async Task<string> CalculateTotals(Stream input, bool calculatePlay)
+    private static async Task<string> CalculateTotals(Stream input, bool calculatePlay)
     {
         using var streamReader = new StreamReader(input, leaveOpen: true);
         var runningScore = 0;
