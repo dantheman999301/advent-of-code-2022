@@ -17,14 +17,16 @@ public class DayFourTests
     [Fact]
     public async Task GivenAnExampleInput_WhenDayFourPartOneIsRun_ThenResultIsTwo()
     {
-        var result = await new DayFour().RunPartOne(Input.ToStream());
+        await using var stream = Input.ToStream();
+        var result = await new DayFour().RunPartOne(stream);
         result.Should().BeSuccess().And.HaveValue("2");
     }
     
     [Fact]
     public async Task GivenAnExampleInput_WhenDayFourPartTwoIsRun_ThenResultIsFour()
     {
-        var result = await new DayFour().RunPartTwo(Input.ToStream());
+        await using var stream = Input.ToStream();
+        var result = await new DayFour().RunPartTwo(stream);
         result.Should().BeSuccess().And.HaveValue("4");
     }
 }
