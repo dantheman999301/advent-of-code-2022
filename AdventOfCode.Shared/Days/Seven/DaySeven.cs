@@ -26,13 +26,6 @@ public class DaySeven : IDay
         var minSizeFolderToDelete = FindMinimumSizeToDelete(root, 30000000);
         var smallestViableFolder = FindFolderToDelete(root, minSizeFolderToDelete, int.MaxValue);
 
-        var folders = GetAllFolderNodes(root);
-        var smallestViableFolder2 = folders
-            .Select(f => new { Name = f.Value.Name, Size = f.GetSizeIncludingChildren() })
-            .Where(s => s.Size > minSizeFolderToDelete)
-            .OrderBy(s => s.Size)
-            .First();
-
         return Result.Ok(smallestViableFolder.ToString());
     }
 
@@ -154,19 +147,5 @@ public class DaySeven : IDay
         }
 
         return currentNode.Children.Aggregate(currentBestSize, (current, child) => FindFolderToDelete(child, minSize, current));
-    }
-
-    private static List<TreeNode<ISystemEntry>> GetAllFolderNodes(TreeNode<ISystemEntry> currentNode)
-    {
-        var nodes = new List<TreeNode<ISystemEntry>>();
-        if (currentNode.Value is not Folder) return nodes;
-        
-        nodes.Add(currentNode);
-        foreach (var child in currentNode.Children)
-        {
-            nodes.AddRange(GetAllFolderNodes(child));
-        }
-
-        return nodes;
     }
 }
