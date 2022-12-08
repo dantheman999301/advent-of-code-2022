@@ -26,7 +26,7 @@ public class DayFiveTests
     }
     
     [Fact]
-    public async Task GivenAnExampleInput_WhenDayFivePartOneIsRun_ThenResultIsMCD()
+    public async Task GivenAnExampleInput_WhenDayFivePartTwoIsRun_ThenResultIsMCD()
     {
         await using var stream = Input.ToStream();
         var result = await new DayFive().RunPartTwo(stream);
