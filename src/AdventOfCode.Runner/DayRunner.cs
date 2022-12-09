@@ -1,5 +1,7 @@
 ﻿using System.Reflection;
 using AdventOfCode.Challenges.Days;
+using FluentResults;
+using Spectre.Console;
 using TextCopy;
 
 namespace AdventOfCode.Runner;
@@ -8,33 +10,45 @@ public static class DayRunner
 {
     private static readonly Lazy<IDictionary<int, IDay>> Days = new(CreateDayDictionary);
 
-    public static async Task Run(int day, Stream input)
+    public static async Task<Result> Run(int day, Stream input)
     {
         if (!Days.Value.TryGetValue(day, out var parts))
         {
-            Console.WriteLine("Could not find day");
-            return;
+            return Result.Fail("Could not find day");
         };
 
+        AnsiConsole.WriteLine();
+        
         var result = await parts.RunPartOne(input);
+        
+        AnsiConsole.Write(new Rule("Part One") { Alignment = Justify.Left });
+        AnsiConsole.MarkupInterpolated($"Result: [palegreen1]{result.Value}[/]");
+        AnsiConsole.WriteLine();
+        
         await ClipboardService.SetTextAsync(result.Value);
-        Console.WriteLine("Part one found and copied to clipboard. Result was:");
-        Console.WriteLine(result.Value);
-        Console.WriteLine("Press a key to move to part two");
+        
+        AnsiConsole.WriteLine("Result in clipboard. Press a key to move to part two");
+        AnsiConsole.WriteLine();
         Console.ReadKey();
         
         input.Position = 0;
         try
         {
+            AnsiConsole.Write(new Rule("Part Two") { Alignment = Justify.Left });
+            
             result = await parts.RunPartTwo(input);
             await ClipboardService.SetTextAsync(result.Value);
-            Console.WriteLine("Part two found and copied to clipboard. Result was");
-            Console.WriteLine(result.Value);
+            
+            AnsiConsole.MarkupInterpolated($"Result: [palegreen1]{result.Value}[/]");
+            AnsiConsole.WriteLine();
+            AnsiConsole.WriteLine("Result in clipboard");
         }
         catch (NotImplementedException)
         {
-            Console.WriteLine("Part two not yet implemented");
+            AnsiConsole.WriteLine("[red]Part two not yet implemented[/]");
         }
+
+        return Result.Ok();
     }
 
     private static IDictionary<int, IDay> CreateDayDictionary()

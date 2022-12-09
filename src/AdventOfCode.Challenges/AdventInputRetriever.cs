@@ -9,7 +9,12 @@ public static class AdventInputRetriever
     {
         var assembly = Assembly.GetExecutingAssembly();
         var resourceName = assembly.GetManifestResourceNames()
-            .Single(str => str.EndsWith($"Input.{day}.txt"));
+            .SingleOrDefault(str => str.EndsWith($"Input.{day}.txt"));
+
+        if (resourceName is null)
+        {
+            return Result.Fail("Could not find input to puzzle");
+        }
 
         var stream = assembly.GetManifestResourceStream(resourceName);
         return stream is not null ? Result.Ok(stream) : Result.Fail("Could not find input to puzzle");

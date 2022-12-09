@@ -1,10 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventOfCode.Challenges", "AdventOfCode.Challenges\AdventOfCode.Challenges.csproj", "{F5BDDAB3-6993-4668-8586-AA36B6F87575}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventOfCode.Challenges", "src\AdventOfCode.Challenges\AdventOfCode.Challenges.csproj", "{F5BDDAB3-6993-4668-8586-AA36B6F87575}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventOfCode.Runner", "AdventOfCode.Runner\AdventOfCode.Runner\AdventOfCode.Runner.csproj", "{F315561F-95A0-4FC7-8350-7AEBA615D33F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventOfCode.Runner", "src\AdventOfCode.Runner\AdventOfCode.Runner.csproj", "{F315561F-95A0-4FC7-8350-7AEBA615D33F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventOfCode.Tests", "AdventOfCode.Tests\AdventOfCode.Tests.csproj", "{B1E9A2BE-A3EC-463C-B513-C14B3138749C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventOfCode.Tests", "tests\AdventOfCode.Tests\AdventOfCode.Tests.csproj", "{B1E9A2BE-A3EC-463C-B513-C14B3138749C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
