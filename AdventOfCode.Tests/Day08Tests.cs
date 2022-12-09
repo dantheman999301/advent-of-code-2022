@@ -1,4 +1,4 @@
-using AdventOfCode.Shared.Days.Year2022.Day08;
+using AdventOfCode.Challenges.Days.Year2022.Day08;
 using FluentResults.Extensions.FluentAssertions;
 
 namespace AdventOfCode.Tests;

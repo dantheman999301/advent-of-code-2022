@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventOfCode.Shared", "AdventOfCode.Shared\AdventOfCode.Shared.csproj", "{F5BDDAB3-6993-4668-8586-AA36B6F87575}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventOfCode.Challenges", "AdventOfCode.Challenges\AdventOfCode.Challenges.csproj", "{F5BDDAB3-6993-4668-8586-AA36B6F87575}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventOfCode.Runner", "AdventOfCode.Runner\AdventOfCode.Runner\AdventOfCode.Runner.csproj", "{F315561F-95A0-4FC7-8350-7AEBA615D33F}"
 EndProject

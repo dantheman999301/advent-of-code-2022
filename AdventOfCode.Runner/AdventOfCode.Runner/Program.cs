@@ -1,7 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using AdventOfCode.Challenges;
 using AdventOfCode.Runner;
-using AdventOfCode.Shared;
 
 Console.WriteLine("Advent of Code!");
 Console.WriteLine();

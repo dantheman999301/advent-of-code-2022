@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using AdventOfCode.Shared.Days;
+using AdventOfCode.Challenges.Days;
 using TextCopy;
 
 namespace AdventOfCode.Runner;
