@@ -17,8 +17,9 @@ public static class DayRunner
         };
 
         var result = await parts.RunPartOne(input);
-        await ClipboardService.SetTextAsync(result.Value); 
-        Console.WriteLine("Part one found and copied to clipboard");
+        await ClipboardService.SetTextAsync(result.Value);
+        Console.WriteLine("Part one found and copied to clipboard. Result was:");
+        Console.WriteLine(result.Value);
         Console.WriteLine("Press a key to move to part two");
         Console.ReadKey();
         
@@ -27,7 +28,8 @@ public static class DayRunner
         {
             result = await parts.RunPartTwo(input);
             await ClipboardService.SetTextAsync(result.Value);
-            Console.WriteLine("Part two found and copied to clipboard");
+            Console.WriteLine("Part two found and copied to clipboard. Result was");
+            Console.WriteLine(result.Value);
         }
         catch (NotImplementedException)
         {
