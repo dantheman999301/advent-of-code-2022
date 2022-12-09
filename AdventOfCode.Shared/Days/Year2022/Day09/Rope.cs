@@ -2,19 +2,18 @@ namespace AdventOfCode.Shared.Days.Year2022.Day09;
 
 public class Rope
 {
-    public Point[] RopePositions { get; }
+    private Point[] RopePositions { get; }
     
     public Rope(int length)
     {
         RopePositions = Enumerable.Range(0, length).Select(_ => new Point(0, 0)).ToArray();
     }
 
-    public ISet<Point> Move(Instruction instruction)
+    public IEnumerable<Point> Move(Instruction instruction)
     {
         HashSet<Point> tailPointsVisited = new();
         for (var i = 0; i < instruction.Amount; i++)
         {
-            // Move head
             var headPoint = RopePositions[0];
             headPoint = instruction switch
             {
