@@ -22,7 +22,8 @@ public static class DayRunner
         var result = await parts.RunPartOne(input);
         
         AnsiConsole.Write(new Rule("Part One") { Alignment = Justify.Left });
-        AnsiConsole.MarkupInterpolated($"Result: [palegreen1]{result.Value}[/]");
+        AnsiConsole.WriteLine("Result:");
+        AnsiConsole.MarkupInterpolated($"[palegreen1]{result.Value}[/]");
         AnsiConsole.WriteLine();
         
         await ClipboardService.SetTextAsync(result.Value);
@@ -38,8 +39,8 @@ public static class DayRunner
             
             result = await parts.RunPartTwo(input);
             await ClipboardService.SetTextAsync(result.Value);
-            
-            AnsiConsole.MarkupInterpolated($"Result: [palegreen1]{result.Value}[/]");
+            AnsiConsole.WriteLine("Result:");
+            AnsiConsole.MarkupInterpolated($"[palegreen1]{result.Value}[/]");
             AnsiConsole.WriteLine();
             AnsiConsole.WriteLine("Result in clipboard");
         }
