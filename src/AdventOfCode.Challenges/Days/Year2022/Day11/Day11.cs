@@ -1,4 +1,3 @@
-using System.Collections;
 using AdventOfCode.Challenges.Extensions;
 using FluentResults;
 
@@ -10,17 +9,30 @@ public class Day11 : IDay
     
     public async Task<Result<string>> RunPartOne(Stream input)
     {
-        var monkeys = await ParseInput(input);
-        
-        const int maxRounds = 20;
-        
-        foreach (var monkey in monkeys)
+        var business = await FindMonkeyBusiness(input, 20, true);
+        return Result.Ok(business.ToString());
+    }
+
+    public async Task<Result<string>> RunPartTwo(Stream input)
+    {
+        var business = await FindMonkeyBusiness(input, 10000, false);
+        return Result.Ok(business.ToString());
+    }
+
+    private static async Task<long> FindMonkeyBusiness(Stream input, int rounds, bool shouldDivide)
+    {
+        var monkeys = await ParseInput(input, shouldDivide);
+
+        if (!shouldDivide)
         {
-            Console.WriteLine(monkey.ToStarter());
-            Console.WriteLine();
+            var mod = monkeys.Select(monkey => monkey.Divisor).Aggregate((x, y) => x * y);
+            foreach (var monkey in monkeys)
+            {
+                monkey.SetOperationMod(mod);
+            }
         }
 
-        for (var round = 1; round <= maxRounds; round++)
+        for (var round = 1; round <= rounds; round++)
         {
             foreach (var monkey in monkeys)
             {
@@ -29,33 +41,16 @@ public class Day11 : IDay
                     monkeys[throwTos.Monkey].ThrownItem(throwTos.Item);
                 }
             }
-
-            Console.WriteLine($"Round {round}");
-            for (var index = 0; index < monkeys.Length; index++)
-            {
-                var monkey = monkeys[index];
-                Console.WriteLine($"Monkey {index} | {monkey}");
-            }
-
-            Console.WriteLine();
         }
-
-        var result =
-            monkeys.OrderByDescending(m => m.Inspections)
-                .Select(m => m.Inspections)
-                .Take(2)
-                .ToArray()
-                .Aggregate((current, next) => current * next);
-
-        return Result.Ok(result.ToString());
+        
+        return monkeys.OrderByDescending(m => m.Inspections)
+            .Select(m => m.Inspections)
+            .Take(2)
+            .ToArray()
+            .Aggregate((current, next) => current * next);
     }
 
-    public Task<Result<string>> RunPartTwo(Stream input)
-    {
-        throw new NotImplementedException();
-    }
-
-    private static async Task<Monkey[]> ParseInput(Stream input)
+    private static async Task<Monkey[]> ParseInput(Stream input, bool shouldDivide)
     {
         var monkeys = new List<Monkey>();
         using var streamReader = new StreamReader(input, leaveOpen: true);
@@ -63,14 +58,14 @@ public class Day11 : IDay
         {
             var line = await streamReader.ReadLineAsync();
             if (!line?.StartsWith("Monkey") ?? true) continue;
-            var monkey = await ParseMonkey(monkeys.Count, streamReader);
+            var monkey = await ParseMonkey(monkeys.Count, streamReader, shouldDivide);
             monkeys.Add(monkey);
         }
 
         return monkeys.ToArray();
     }
 
-    private static async Task<Monkey> ParseMonkey(int currentMoney, TextReader reader)
+    private static async Task<Monkey> ParseMonkey(int currentMoney, TextReader reader, bool shouldDivide)
     {
         var line = await reader.ReadLineAsync();
         var items = line!
@@ -84,7 +79,7 @@ public class Day11 : IDay
         var left = operationArgs[0] == "old" ? (int?) null : int.Parse(operationArgs[0]);
         var right = operationArgs[2] == "old" ? (int?) null : int.Parse(operationArgs[2]);
         var sign = operationArgs[1] == "+" ? Sign.Addition : Sign.Multiply;
-        var operation = new Operation(left, sign, right);
+        var operation = new Operation(left, sign, right, shouldDivide);
 
         line = await reader.ReadLineAsync();
         var divisibleBy = int.Parse(line!.Trim().SplitBySpace()[^1]);
@@ -105,10 +100,10 @@ public class Monkey
 {
     private readonly int _id;
     private readonly Queue<long> _items;
-    private readonly Operation _operation;
+    private Operation _operation;
     private readonly ThrowToTest _throwToTest;
 
-    public int Inspections { get; private set; }
+    public long Inspections { get; private set; }
 
     public Monkey(int id, IEnumerable<long> items, Operation operation, ThrowToTest throwToTest)
     {
@@ -136,6 +131,13 @@ public class Monkey
         }
     }
 
+    public void SetOperationMod(int mod)
+    {
+        _operation = _operation with { Mod = mod };
+    }
+
+    public int Divisor => _throwToTest.Divisor;
+
     public override string ToString()
     {
         return $"Inspections {Inspections} | Items: {string.Join(", ", _items)}";
@@ -147,21 +149,21 @@ public class Monkey
         Monkey {_id}:
           Starting items: {string.Join(", ", _items)}
           Operation: new = {_operation}
-          Test: divisible by {_throwToTest.DivisibleBy}
+          Test: divisible by {_throwToTest.Divisor}
             If true: throw to monkey {_throwToTest.TrueMonkey}
             If false: throw to monkey {_throwToTest.FalseMonkey}
         """;
     }
 };
 
-public record ThrowToTest(int DivisibleBy, int TrueMonkey, int FalseMonkey)
+public record ThrowToTest(int Divisor, int TrueMonkey, int FalseMonkey)
 {
-    public int RunTest(long worryLevel) => worryLevel % DivisibleBy == 0 ? TrueMonkey : FalseMonkey;
+    public int RunTest(long worryLevel) => worryLevel % Divisor == 0 ? TrueMonkey : FalseMonkey;
 }
 
 public record ThrowTo(int Monkey, long Item);
 
-public record Operation(long? LeftHand, Sign Sign, long? RightHand)
+public record Operation(long? LeftHand, Sign Sign, long? RightHand, bool ShouldDivide, int Mod = 0)
 {
     public long Perform(long currentLevel)
     {
@@ -175,7 +177,14 @@ public record Operation(long? LeftHand, Sign Sign, long? RightHand)
             _ => throw new ArgumentOutOfRangeException()
         };
 
-        worryLevel /= 3;
+        if (ShouldDivide)
+        {
+            worryLevel /= 3;
+        }
+        else
+        {
+            worryLevel %= Mod;
+        }
 
         return worryLevel;
     }
