@@ -1,5 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using System.Diagnostics;
 using AdventOfCode.Challenges;
 using AdventOfCode.Runner;
 using Spectre.Console;
@@ -13,7 +14,7 @@ var selected = false;
 while (!selected)
 {
     AnsiConsole.WriteLine();
-    var dayToRun =AnsiConsole.Prompt(
+    var dayToRun = AnsiConsole.Prompt(
         new TextPrompt<int>("What [deepskyblue1]day[/] do you wish to run?")
             .PromptStyle("deepskyblue1")
             .ValidationErrorMessage("[red]Not a valid Christmas day![/]")
@@ -48,5 +49,3 @@ while (!selected)
     Console.WriteLine("Press any key to exit");
     Console.ReadKey();
 }
-
-
