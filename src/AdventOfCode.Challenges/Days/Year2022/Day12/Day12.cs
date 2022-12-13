@@ -42,7 +42,7 @@ public class Day12 : IDay
         }
 
 
-        var grid = Grid.Parse(lines);
+        var grid = Grid.Parse(lines, startChar, endChar);
         return grid;
     }
 }
