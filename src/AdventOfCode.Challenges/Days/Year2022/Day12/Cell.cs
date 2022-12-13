@@ -28,5 +28,12 @@ public record Cell(int Row, int Column, Cell? From)
         return backTrack;
     }
 
+    public int GetPathLength() => GetPath().Count - 1;
+
     public (int Row, int Column) ToTuple() => (Row, Column);
+
+    public override string ToString()
+    {
+        return $"({Row}, {Column})";
+    }
 }

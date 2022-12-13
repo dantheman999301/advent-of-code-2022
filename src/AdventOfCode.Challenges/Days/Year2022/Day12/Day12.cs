@@ -9,6 +9,28 @@ public class Day12 : IDay
 
     public async Task<Result<string>> RunPartOne(Stream input)
     {
+        var grid = await ParseGrid(input);
+
+        var solver = new PartOneSolver(grid);
+        if (solver.TrySolve(out var end))
+            return Result.Ok(end.GetPathLength().ToString());
+        else
+            return Result.Fail("Failed to find path");
+    }
+
+    public async Task<Result<string>> RunPartTwo(Stream input)
+    {
+        var grid = await ParseGrid(input, 'E', 'a');
+
+        var solver = new PartTwoSolver(grid);
+        if (solver.TrySolve(out var end))
+            return Result.Ok(end.GetPathLength().ToString());
+        else
+            return Result.Fail("Failed to find path");
+    }
+
+    private static async Task<Grid> ParseGrid(Stream input, char startChar = 'S', char endChar = 'E')
+    {
         using var streamReader = new StreamReader(input, leaveOpen: true);
         var lines = new List<string>();
         while (!streamReader.EndOfStream)
@@ -18,16 +40,9 @@ public class Day12 : IDay
 
             lines.Add(line);
         }
-        
+
 
         var grid = Grid.Parse(lines);
-
-        var solver = new PartOneSolver(grid);
-        return solver.TrySolve(out var end) ? Result.Ok(end.GetPath().Count.ToString()) : Result.Fail("Failed to find path");
-    }
-
-    public Task<Result<string>> RunPartTwo(Stream input)
-    {
-        throw new NotImplementedException();
+        return grid;
     }
 }

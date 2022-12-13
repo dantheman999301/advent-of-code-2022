@@ -33,20 +33,24 @@ public record Grid(int[,] HeightMap, Cell Start, HashSet<(int, int)> End)
         return toHeight <= fromHeight + 1;
     }
 
-    public HashSet<Cell> FindNeighborsUp(Cell p)
+    public IEnumerable<Cell> FindNeighborsUp(Cell current)
     {
-        return p.GetNeighbours()
+        return current.GetNeighbours()
             .Where(IsInBounds)
-            .Where(n => CheckHeights(HeightMap[p.Row, p.Column], HeightMap[n.Row, n.Column]))
+            .Where(neighbour =>
+                CheckHeights(HeightMap[current.Row, current.Column], HeightMap[neighbour.Row, neighbour.Column]))
             .ToHashSet();
     }
 
-    public HashSet<Cell> FindNeighborsDown(Cell p)
+    public IEnumerable<Cell> FindNeighborsDown(Cell current)
     {
-        return p.GetNeighbours()
+        var set = current.GetNeighbours()
             .Where(IsInBounds)
-            .Where(n => CheckHeights(HeightMap[n.Row, n.Column], HeightMap[p.Row, p.Column]))
+            .Where(neighbour =>
+                CheckHeights(HeightMap[neighbour.Row, neighbour.Column], HeightMap[current.Row, current.Column]))
             .ToHashSet();
+
+        return set;
     }
 
     public static Grid Parse(IList<string> lines, char startChar = 'S', char endChar = 'E')

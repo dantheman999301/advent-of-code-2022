@@ -21,11 +21,11 @@ public class Day12Tests
         result.Should().BeSuccess().And.HaveValue("31");
     }
     
-    // [Fact]
-    // public async Task GivenAnExampleInput_WhenDay11PartTwoIsRun_ThenResultIs2713310158()
-    // {
-    //     await using var stream = Input.ToStream();
-    //     var result = await new Day12().RunPartTwo(stream);
-    //     result.Should().BeSuccess().And.HaveValue("2713310158");
-    // }
+    [Fact]
+    public async Task GivenAnExampleInput_WhenDay11PartTwoIsRun_ThenResultIs29()
+    {
+        await using var stream = Input.ToStream();
+        var result = await new Day12().RunPartTwo(stream);
+        result.Should().BeSuccess().And.HaveValue("29");
+    }
 }
